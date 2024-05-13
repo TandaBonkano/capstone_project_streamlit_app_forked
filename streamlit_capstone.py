@@ -13,8 +13,13 @@ class_labels = ['Glioma', 'Meningioma', 'No Tumor', 'Pituitary']  # Adjust based
 def preprocess_image(image):
     # Resize image to match model input size
     img = image.resize((256, 256))
+    # Convert image to numpy array
     img = np.array(img)
-    img = img / 255.0  # Normalize pixel values
+    # Ensure the image has 3 channels (RGB)
+    if len(img.shape) == 2:  # If grayscale, convert to RGB
+        img = np.stack((img,) * 3, axis=-1)
+    # Normalize pixel values
+    img = img / 255.0
     return img
 
 # Streamlit UI
